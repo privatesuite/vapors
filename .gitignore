@@ -1,0 +1,12 @@
+# Vendor
+
+/node_modules
+
+# Application
+
+/temp
+/playlists
+
+# Keys and Config
+
+/.env
