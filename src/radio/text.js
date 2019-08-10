@@ -9,7 +9,7 @@ let channels = [];
 
 module.exports = channel => channels.push(channel);
 
-module.exports.playTrack = track => {
+module.exports.playTrack = (position, track) => {
 
 	for (const channel of channels) {
 
@@ -20,6 +20,12 @@ module.exports.playTrack = track => {
 				title: "Now Playing",
 
 				fields: [{
+
+					name: "Position",
+					value: position + 1,
+					inline: true
+
+				}, {
 
 					name: "Track",
 					value: track.title,

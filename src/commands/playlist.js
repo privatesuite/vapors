@@ -45,6 +45,8 @@ module.exports = {
 
 				const _playlist = await playlist.Playlist.import(ppath);
 
+				if (typeof args[2] === "number" && _playlist.tracks[args[2] - 1]) _playlist.currentlyPlaying = args[2] - 1;
+
 				message.channel.send(`Playing playlist **${args[1]}**...`);
 
 				radio.playPlaylist(_playlist);

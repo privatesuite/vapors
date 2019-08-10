@@ -30,6 +30,18 @@ module.exports = {
 
 		if (!getListeners().has(message.author.id)) return;
 
+		if (message.member && message.member.hasPermission("MANAGE_GUILD")) {
+
+			votes = new Set();
+			text.skip(votes.size / getListenerAmount());
+
+			console.log("Skipping track...");
+			voice.stop();
+
+			return;
+
+		}
+
 		if (votes.size === 0) {
 
 			radio.getPlaylist().once("track", () => {

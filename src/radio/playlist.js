@@ -24,6 +24,7 @@ class Playlist extends events.EventEmitter {
 		this.albums = albums;
 		this.tracks = tracks;
 		
+		this.volume = 1;
 		this.playing = false;
 		this.currentlyPlaying = 0;
 
@@ -41,7 +42,7 @@ class Playlist extends events.EventEmitter {
 
 		while (this.playing && this.tracks[this.currentlyPlaying]) {
 			
-			if (this.currentlyPlaying % 3 === 0) {
+			if (this.currentlyPlaying % (parseInt(process.env.YL_FREQUENCY) - 1) === 0) {
 				
 				await voice.playYl();
 
@@ -49,15 +50,23 @@ class Playlist extends events.EventEmitter {
 
 			}
 
+			if (!this.tracks[this.currentlyPlaying]) {
+
+				break;
+
+			}
+
 			console.log(`Playing track ${this.currentlyPlaying}`);
 
 			// console.log(this.tracks[this.currentlyPlaying]);
 
-			text.playTrack(this.tracks[this.currentlyPlaying]);
+			text.playTrack(this.currentlyPlaying, this.tracks[this.currentlyPlaying]);
 			await voice.cacheUrl(this.tracks[this.currentlyPlaying].file["mp3-128"]);
 			if (this.tracks[this.currentlyPlaying + 1]) voice.cacheUrl(this.tracks[this.currentlyPlaying + 1].file["mp3-128"]);
-			await voice.playUrl(this.tracks[this.currentlyPlaying].file["mp3-128"]);
-			
+			let p = voice.playUrl(this.tracks[this.currentlyPlaying].file["mp3-128"]);
+			voice.getStream().setVolume(this.volume);
+			await p;
+
 			this.emit("track");
 
 			console.log(`Next track ${this.currentlyPlaying + 1}...`);

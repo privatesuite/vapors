@@ -5,6 +5,8 @@ const axios = require("axios").default;
 const Arrays = require("../utils/arrays");
 const Discord = require("discord.js");
 
+const END_DELAY = 2250;
+
 /**
  * @type {Discord.StreamDispatcher}
  */
@@ -44,6 +46,9 @@ async function (channel) {
 	connection.playBroadcast(broadcast);
 
 }
+
+module.exports.getStream = () => stream;
+module.exports.getBroadcast = () => broadcast;
 
 module.exports.getChannels = () => channels;
 
@@ -94,7 +99,7 @@ module.exports.playFile = async file => {
 
 				resolve();
 
-			}, 1000);
+			}, END_DELAY);
 			
 		});
 
@@ -119,7 +124,7 @@ module.exports.playUrl = async url => {
 				module.exports.uncacheUrl(url)
 				resolve();
 
-			}, 1000);
+			}, END_DELAY);
 
 		});
 
